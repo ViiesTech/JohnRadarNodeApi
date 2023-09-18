@@ -8,6 +8,7 @@ const Route = express.Router()
 Route.post('/Register', AuthController.Register)
 Route.post('/Login', AuthController.Login)
 Route.post('/ForgetPasswordEmail', AuthController.sendUserPasswordEmail)
+Route.post('/VerifyOtp', AuthController.VerifyOtp)
 Route.post('/resetForgetPassword', AuthController.resetForgetPassword)
 
 export default Route
