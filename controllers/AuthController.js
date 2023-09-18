@@ -86,7 +86,7 @@ class AuthController {
             const user = await User.findOne({ email: email })
 
             if (user) {
-                const otp = Math.floor(100000 + Math.random() * 900000);
+                const otp = Math.floor(1000 + Math.random() * 9000);
 
                 // Store the OTP in the database
                 const otpData = new OTP({
