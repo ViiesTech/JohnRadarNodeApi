@@ -26,14 +26,23 @@ class AuthController {
                         tc: tc,
                     })
 
-                    CreateAccount.save()
+                    CreateAccount.save().then(async()=>{
 
-                    const Saved_user = await User.findOne({ email: email })
+                        const Saved_user = await User.findOne({ email: email })
+
+                        if(Saved_user){
+
+                            const token = JWT.sign({ UserID: Saved_user._id },"JohnRadarpoiuytrewq", { expiresIn: "30d" })
+                            res.send({ "status": "true", "message": "Registered successfully", "token": token })
+                        }else{
+                            res.send({ "status": "false", "message": "Registration Failed",})
+
+                        }
+                    })
 
 
-                    const token = JWT.sign({ UserID: Saved_user._id },"JohnRadarpoiuytrewq", { expiresIn: "30d" })
+                    
 
-                    res.send({ "status": "true", "message": "Registered successfully", "token": token })
 
                 } catch (e) {
                     res.send({ "status": "failed", "message": "Resgistration failed", "error": e.message })
@@ -76,8 +85,6 @@ class AuthController {
             return res.send({ "status": "failed", "message": "All fields are required" });
         }
     }
-    
-
 
     static sendUserPasswordEmail = async (req, res) => {
         const { email } = req.body;
@@ -168,7 +175,6 @@ class AuthController {
             }
 
     }
-
 
 }
 
