@@ -20,19 +20,19 @@ io.on('connection', (socket) => {
     console.log(`A user connected with socket ID: ${socket.id}`);
   
     socket.on('message', async(message) => {
-  
+  console.log(message);
       try {
         // Store the message in MongoDB
         const message = new ChatModel({
-          sender: data.sender,
-          receiver: data.receiver,
-          text: data.text,
+          sender: message.sender,
+          receiver: message.receiver,
+          text: message.text,
           timestamp: new Date(),
         });
         await message.save();
   
         // Emit the message to the receiver
-        io.to(data.receiverSocketId).emit('message', message);
+        socket.emit('message', message.text);
       } catch (error) {
         console.error('Error sending message:', error);
       }
@@ -48,7 +48,7 @@ io.on('connection', (socket) => {
 
 app.get('/',(req, res)=>{
 
-    
+
     res.send("Hello world!")
 })
 
