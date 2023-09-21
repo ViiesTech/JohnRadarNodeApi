@@ -14,6 +14,8 @@ Route.post('/VerifyOtp', AuthController.VerifyOtp)
 Route.post('/resetForgetPassword', AuthController.resetForgetPassword)
 
 //Have to delete these apis
+Route.post('/GetAllUser', AuthController.GetAllUser)
+Route.post('/MyData', AuthController.MyData)
 
 //Private/Protected Routes
 

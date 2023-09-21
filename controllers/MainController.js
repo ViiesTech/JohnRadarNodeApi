@@ -25,17 +25,7 @@ class MainController {
 
 
 
-    static GetAllUser = async(req, res) => {
-        const {myID} = req.body
-        const users = await UserModel.find({ _id: { $ne: myID } }); 
-        res.send({"AllUser": "true", "data": users})
-    } 
-
-    static MyData = async(req, res) => {
-        const {myID} = req.body
-        const users = await UserModel.findById(myID); 
-        res.send({"CurrentUser": "true", "myData": users})
-    } 
+  
 
 }
 
