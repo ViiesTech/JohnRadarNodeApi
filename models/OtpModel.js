@@ -4,11 +4,11 @@ const OTPSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User', // Reference to the User model
-        required: true,
+        require: true,
     },
     otpCode: {
         type: Number, // Assuming OTP is numeric
-        required: true,
+        require: true,
     },
     createdAt: {
         type: Date,

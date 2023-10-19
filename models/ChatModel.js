@@ -4,16 +4,16 @@ const ChatSchema = mongoose.Schema({
     sender: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: true
+        require: true
     },
     receiver: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: true
+        require: true
     },
     text: {
         type: String,
-        required: true
+        require: true
     },
     timestamp: {
         type: Date,

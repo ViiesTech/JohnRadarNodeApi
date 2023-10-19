@@ -176,20 +176,6 @@ class AuthController {
 
     }
 
-    //have to delete this
-    static GetAllUser = async(req, res) => {
-        const {myID} = req.body
-        const users = await User.find({ _id: { $ne: myID } }); 
-        res.send({"AllUser": "true", "data": users})
-    } 
-
-    static MyData = async(req, res) => {
-      
-        const {myID} = req.body
-        const users = await User.findById(myID); 
-        res.send({"CurrentUser": "true", "myData": users})
-    } 
-
 }
 
 
