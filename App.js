@@ -19,8 +19,6 @@ app.use("/api/user",Route)
   
 
 app.get('/',(req, res)=>{
-
-
     res.send("Hello world!")
 })
 

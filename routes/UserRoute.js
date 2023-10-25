@@ -20,6 +20,7 @@ Route.post('/resetForgetPassword', AuthController.resetForgetPassword)
 
 Route.get('/getUserData', MainController.GetMyData)
 Route.post('/RegisterYourLocation', MainController.RegisterYourLocation)
+Route.post('/AdsRegister', MainController.AdsRegister)
 
 
 export default Route

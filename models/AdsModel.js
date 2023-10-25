@@ -18,9 +18,8 @@ const AdsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+});
 
-})
+const Ads = mongoose.model('Ads', AdsSchema);
 
-const Ads = new mongoose.Model({"Ads" : AdsSchema})
-
-export default Ads
+export default Ads;

@@ -1,7 +1,10 @@
 
 import User from "../models/UserModel.js";
 import BussnessLocation from '../models/BussnessLocationModel.js'
+import Ads from "../models/AdsModel.js";
+
 class MainController {
+
     static GetMyData = async (req, res) => {
         try {
             const { id } = req.body;
@@ -22,8 +25,9 @@ class MainController {
             res.status(500).send({ "Success": false, "UserData": "Error occurred" });
         }
     }
+
     static RegisterYourLocation = async (req, res) => {
-        const { userId, Longtitude,Latitude, BusinessName, PhoneNumber, myEmail } = req.body;
+        const { userId, Longtitude, Latitude, BusinessName, PhoneNumber, myEmail } = req.body;
         try {
             if (userId === "" || BussnessLocation === "" || myEmail === "" || BusinessName === "" || PhoneNumber === "") {
                 res.send({
@@ -68,15 +72,43 @@ class MainController {
         }
     }
 
+    static AdsRegister = async (req, res) => {
 
-    static RegisterYourLocation = async (req, res) => {
-        const {  } = req.body;
-       
+        const { BussinessLocationID, BusinessCategory, AdTitle, AdDescription } = req.body;
+        try {
+            if (BussinessLocationID === "" || BusinessCategory === "" || AdTitle === "" || AdDescription === "") {
+                res.send({
+                    "status": "failed",
+                    "message": "All fields are required"
+                })
+            } else {
+
+
+                const CreateAd = new Ads({
+                    BussinessLocationID: BussinessLocationID,
+                    BusinessCategory: BusinessCategory,
+                    AdTitle: AdTitle,
+                    AdDescription: AdDescription,
+
+                });
+
+                await CreateAd.save();
+
+                res.send({
+                    "Status": "Success",
+                    "message": "Ad created successfully",
+                });
+
+            }
+        } catch (error) {
+            // Handle errors, including duplicate key errors if necessary
+            console.error(error);
+            res.status(500).send({
+                "Status": "Failed",
+                "message": "An error occurred while creating the ad.",
+            });
+        }
     }
-
-
 }
-
-
 
 export default MainController
