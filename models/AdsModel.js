@@ -6,15 +6,23 @@ const AdsSchema = new mongoose.Schema({
         ref: 'BusinessLocation', // Reference to the User model
         required: true,
     },
-    BusinessCategory : {
+    BusinessCategory: {
         type: String,
         required: true
     },
-    AdTitle : {
+    AdTitle: {
         type: String,
         required: true
     },
-    AdDescription : {
+    Latitude: {
+        type: String,
+        require: true,
+    },
+    Longtitude: {
+        type: String,
+        require: true,
+    },
+    AdDescription: {
         type: String,
         required: true
     },

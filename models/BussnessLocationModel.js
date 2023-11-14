@@ -4,23 +4,23 @@ const BusinessSchema = new mongoose.Schema({
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User', // Reference to the User model
-      required: true,
+      require: true,
     },
     Latitude: {
       type: String,
-      required: true,
+      require: true,
     },
     Longtitude: {
       type: String,
-      required: true,
+      require: true,
     },
     BussinessName: {
       type: String,
-      required: true,
+      require: true,
     },
     PhoneNumber: {
       type: String,
-      required: true,
+      require: true,
     },
     UserEmail: {
       type: String,

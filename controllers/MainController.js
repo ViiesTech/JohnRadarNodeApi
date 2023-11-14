@@ -27,32 +27,46 @@ class MainController {
     }
 
     static RegisterYourLocation = async (req, res) => {
+
         const { userId, Longtitude, Latitude, BusinessName, PhoneNumber, myEmail } = req.body;
+
+        const existingLocation = await BussnessLocation.findOne({ userId });
+
+
         try {
-            if (userId === "" || BussnessLocation === "" || myEmail === "" || BusinessName === "" || PhoneNumber === "") {
-                res.send({
-                    "status": "falied",
-                    "message": "All fields are required"
-                })
+
+            if (existingLocation) {
+                if (existingLocation.Latitude == Latitude && existingLocation.Longtitude == Longtitude) {
+                    res.send({ "Success": false, "message": "Your bussiness is already register in that location" })
+                } else {
+                    res.send({ "Success": false, "message": "Your bussiness is already register in that location" })
+
+                }
             } else {
+                if (userId === "" || BusinessName === "" || Longtitude === "" || Latitude === "" || myEmail === "" || BusinessName === "" || PhoneNumber === "") {
+                    res.send({
+                        "status": "falied",
+                        "message": "All fields are required"
+                    })
+                } else {
 
+                    const CreateAccount = new BussnessLocation({
+                        userId: userId,
+                        Latitude: Latitude, // Note the corrected field name
+                        Longtitude: Longtitude,
+                        BussinessName: BusinessName, // Note the corrected field name
+                        PhoneNumber: PhoneNumber,
+                        UserEmail: myEmail, // Note the corrected field name
+                    });
 
-                const CreateAccount = new BussnessLocation({
-                    userId: userId,
-                    Latitude: Latitude, // Note the corrected field name
-                    Longtitude: Longtitude,
-                    BussinessName: BusinessName, // Note the corrected field name
-                    PhoneNumber: PhoneNumber,
-                    UserEmail: myEmail, // Note the corrected field name
-                });
+                    await CreateAccount.save();
 
-                await CreateAccount.save();
+                    res.send({
+                        "Status": "Success",
+                        "message": "Account created successfully",
+                    });
 
-                res.send({
-                    "Status": "Success",
-                    "message": "Account created successfully",
-                });
-
+                }
             }
         } catch (error) {
             if (error.code === 11000) {
@@ -74,21 +88,22 @@ class MainController {
 
     static AdsRegister = async (req, res) => {
 
-        const { BussinessLocationID, BusinessCategory, AdTitle, AdDescription } = req.body;
+        const { BussinessLocationID, BusinessCategory, AdTitle, AdDescription, Longtitude, Latitude, } = req.body;
         try {
-            if (BussinessLocationID === "" || BusinessCategory === "" || AdTitle === "" || AdDescription === "") {
+            if (BussinessLocationID === "" || BusinessCategory === "" || AdTitle === "" || AdDescription === "" || Longtitude === "" || Latitude === "") {
                 res.send({
                     "status": "failed",
                     "message": "All fields are required"
                 })
             } else {
 
-
                 const CreateAd = new Ads({
                     BussinessLocationID: BussinessLocationID,
                     BusinessCategory: BusinessCategory,
                     AdTitle: AdTitle,
                     AdDescription: AdDescription,
+                    Longtitude: Longtitude,
+                    Latitude: Latitude,
 
                 });
 
@@ -109,6 +124,33 @@ class MainController {
             });
         }
     }
+
+    static AllAds = async (req, res) => {
+        try {
+            // Use the Mongoose `find` method to get all ads
+            const allAds = await Ads.find({});
+    
+            if (allAds) {
+                res.send({
+                    "Success": true,
+                    "Ads": allAds,
+                });
+            } else {
+                res.send({
+                    "Success": false,
+                    "Ads": "No Ads found",
+                });
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            res.status(500).send({
+                "Success": false,
+                "Ads": "Error occurred",
+            });
+        }
+    }
+    
+
 }
 
 export default MainController
