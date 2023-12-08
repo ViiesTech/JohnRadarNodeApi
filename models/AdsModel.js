@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose  = require("mongoose");
 
 const AdsSchema = new mongoose.Schema({
     BussinessLocationID: {
@@ -30,4 +30,4 @@ const AdsSchema = new mongoose.Schema({
 
 const Ads = mongoose.model('Ads', AdsSchema);
 
-export default Ads;
+module.exports  = Ads

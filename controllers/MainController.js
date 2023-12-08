@@ -1,7 +1,7 @@
 
-import User from "../models/UserModel.js";
-import BussnessLocation from '../models/BussnessLocationModel.js'
-import Ads from "../models/AdsModel.js";
+const User = require("../models/UserModel.js")
+const BussnessLocation = require( '../models/BussnessLocationModel.js')
+const Ads = require( "../models/AdsModel.js");
 
 class MainController {
 
@@ -153,4 +153,4 @@ class MainController {
 
 }
 
-export default MainController
+module.exports =  MainController

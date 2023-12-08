@@ -1,11 +1,12 @@
-import express from 'express'
-import AuthController from '../controllers/AuthController.js'
-import checkUserAuth from '../middleware/Auth_Middleware.js'
-import MainController from '../controllers/MainController.js'
+const express = require('express')
+
+const AuthController = require('../controllers/AuthController.js')
+const checkUserAuth = require('../middleware/Auth_Middleware.js')
+const MainController = require('../controllers/MainController.js')
 
 const Route = express.Router()
 
-Route.use('/getUserData' , checkUserAuth)
+Route.use('/getUserData', checkUserAuth)
 
 
 //Public Routes
@@ -24,4 +25,4 @@ Route.post('/AdsRegister', MainController.AdsRegister)
 Route.get('/AllAds', MainController.AllAds)
 
 
-export default Route
+module.exports = Route

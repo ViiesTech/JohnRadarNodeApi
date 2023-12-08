@@ -1,8 +1,8 @@
-import User from "../models/UserModel.js";
-import bcrypt from 'bcrypt';
-import JWT from 'jsonwebtoken'
-import OTP from "../models/OtpModel.js";
-import nodemailer from 'nodemailer'
+const User = require("../models/UserModel.js")
+const bcrypt = require('bcryptjs');
+const JWT = require('jsonwebtoken')
+const OTP = require("../models/OtpModel.js")
+const nodemailer = require('nodemailer')
 class AuthController {
 
     static Register = async (req, res) => {
@@ -26,22 +26,22 @@ class AuthController {
                         tc: tc,
                     })
 
-                    CreateAccount.save().then(async()=>{
+                    CreateAccount.save().then(async () => {
 
                         const Saved_user = await User.findOne({ email: email })
 
-                        if(Saved_user){
+                        if (Saved_user) {
 
-                            const token = JWT.sign({ UserID: Saved_user._id },"JohnRadarpoiuytrewq", { expiresIn: "30d" })
+                            const token = JWT.sign({ UserID: Saved_user._id }, "JohnRadarpoiuytrewq", { expiresIn: "30d" })
                             res.send({ "status": "true", "message": "Registered successfully", "token": token })
-                        }else{
-                            res.send({ "status": "false", "message": "Registration Failed",})
+                        } else {
+                            res.send({ "status": "false", "message": "Registration Failed", })
 
                         }
                     })
 
 
-                    
+
 
 
                 } catch (e) {
@@ -57,21 +57,21 @@ class AuthController {
 
     static Login = async (req, res) => {
         const { email, password } = req.body;
-    
+
         // Check if the user exists with the given email
         const user = await User.findOne({ email: email });
-    
+
         if (!user) {
             return res.send({ "status": "failed", "message": "User Not Exist" });
         }
-    
+
         if (email && password) {
             const isHashMatch = await bcrypt.compare(password, user.password);
             if (isHashMatch) {
                 // Generate a JWT token and send the user's data without the password
                 const token = JWT.sign({ UserID: user._id }, "JohnRadarpoiuytrewq", { expiresIn: '30d' });
                 const userData = { _id: user._id, name: user.name, email: user.email, tc: user.tc };
-    
+
                 return res.send({
                     "status": "Success",
                     "message": "Successfully logged in",
@@ -101,7 +101,7 @@ class AuthController {
                     otpCode: otp,
                 });
                 await otpData.save();
-    
+
                 // Send the OTP via email
                 const transporter = nodemailer.createTransport({
                     service: 'Gmail', // E.g., 'Gmail', 'Yahoo', etc.
@@ -110,7 +110,7 @@ class AuthController {
                         pass: 'bomuubtkvclgvacn',
                     },
                 });
-    
+
                 const mailOptions = {
                     from: 'visstechapps@gmail.com',
                     to: email,
@@ -123,7 +123,7 @@ class AuthController {
                         res.send({ status: 'Failed', message: 'Failed to send OTP' });
                     } else {
                         console.log('Email sent: ' + info.response);
-                        res.send({ status: 'Success', message: 'OTP sent successfully', "id" : user?._id, "OTP Code" : otp });
+                        res.send({ status: 'Success', message: 'OTP sent successfully', "id": user?._id, "OTP Code": otp });
                     }
                 });
 
@@ -138,15 +138,15 @@ class AuthController {
         }
     }
 
-    static VerifyOtp = async(req, res) => {
-        const {otp,  id} = req.body
+    static VerifyOtp = async (req, res) => {
+        const { otp, id } = req.body
 
         const otpData = await OTP.findOne({ userId: id, otpCode: otp });
 
-        if(otpData){
-            res.send({"success": true, "message": "Otp Verified successfully"})
-        }else{
-            res.send({"success": false, "message": "Invalid Otp"})
+        if (otpData) {
+            res.send({ "success": true, "message": "Otp Verified successfully" })
+        } else {
+            res.send({ "success": false, "message": "Invalid Otp" })
 
         }
 
@@ -154,29 +154,29 @@ class AuthController {
 
     static resetForgetPassword = async (req, res) => {
         const { password, password_confirmation, id } = req.body;
-        
-            if (password && password_confirmation) {
-                if (password !== password_confirmation) {
-                    res.send({ status: 'Failed', message: 'Password does not match' });
-                } else {
-                    // Hash the new password and update the user's password
-                    const salt = await bcrypt.genSalt(10);
-                    const hashPassword = await bcrypt.hash(password, salt);
-    
-                    await User.findByIdAndUpdate(id, { password: hashPassword });
-    
-                    // Delete the OTP from the database since it has been used
-                    // await otpData?.remove();
-    
-                    res.send({ status: 'Success', message: 'Password Reset Successfully' });
-                }
+
+        if (password && password_confirmation) {
+            if (password !== password_confirmation) {
+                res.send({ status: 'Failed', message: 'Password does not match' });
             } else {
-                res.send({ status: 'Failed', message: 'Password and confirmation are required' });
+                // Hash the new password and update the user's password
+                const salt = await bcrypt.genSalt(10);
+                const hashPassword = await bcrypt.hash(password, salt);
+
+                await User.findByIdAndUpdate(id, { password: hashPassword });
+
+                // Delete the OTP from the database since it has been used
+                // await otpData?.remove();
+
+                res.send({ status: 'Success', message: 'Password Reset Successfully' });
             }
+        } else {
+            res.send({ status: 'Failed', message: 'Password and confirmation are required' });
+        }
 
     }
 
 }
 
 
-export default AuthController
+module.exports = AuthController

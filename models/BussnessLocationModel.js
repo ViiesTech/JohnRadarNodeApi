@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose  = require("mongoose");
 
 const BusinessSchema = new mongoose.Schema({
     userId: {
@@ -31,4 +31,4 @@ const BusinessSchema = new mongoose.Schema({
 
 const BusinessLocation = mongoose.model("BusinessLocation", BusinessSchema);
 
-export default BusinessLocation;
+module.exports  = BusinessLocation;

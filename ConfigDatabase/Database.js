@@ -1,9 +1,8 @@
-import mongoose from 'mongoose'
+const mongoose  = require("mongoose");
 
 
 
 const ConnectDataBase = () => {
-
 
 mongoose.set('strictQuery', true);
 mongoose.connect('mongodb+srv://visstechapps:qL5Df46pN91hAu97@viistech.r6nztgu.mongodb.net/JohnRadar');
@@ -13,4 +12,4 @@ db.once("open",()=>console.log("DB Connected"));
 
 }
 {}
-export default ConnectDataBase
+module.exports = ConnectDataBase
